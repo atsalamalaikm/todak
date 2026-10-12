@@ -6,13 +6,15 @@
   <title>토닥이 유형 테스트</title>
   <style>
     :root {
-      --primary: #6c5ce7;
-      --primary-light: #a29bfe;
-      --bg: #f8f9fa;
-      --card-bg: #ffffff;
-      --text: #2d3436;
-      --text-muted: #636e72;
-      --border: #dfe6e9;
+      --primary: #9b51e0;
+      --primary-light: #bb86fc;
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --option-bg: #2a2a2a;
+      --option-hover: #383838;
     }
 
     * {
@@ -28,6 +30,7 @@
       display: flex;
       justify-content: center;
       padding: 20px;
+      min-height: 100vh;
     }
 
     .container {
@@ -35,8 +38,9 @@
       max-width: 600px;
       background: var(--card-bg);
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       padding: 28px 24px;
+      border: 1px solid var(--border);
     }
 
     /* 시작 페이지 스타일 */
@@ -49,7 +53,7 @@
     .start-title {
       font-size: 2rem;
       font-weight: 900;
-      color: var(--primary);
+      color: var(--primary-light);
       margin-bottom: 12px;
       word-break: keep-all;
     }
@@ -71,12 +75,12 @@
       font-size: 1.1rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(108, 92, 231, 0.4);
+      box-shadow: 0 4px 14px rgba(155, 81, 224, 0.4);
       transition: all 0.2s ease;
     }
 
     .start-btn:hover {
-      background: #5b4cc4;
+      background: #843cc7;
       transform: translateY(-2px);
     }
 
@@ -89,14 +93,14 @@
 
     .header h1 {
       font-size: 1.3rem;
-      color: var(--primary);
+      color: var(--primary-light);
       margin-bottom: 4px;
     }
 
     .progress-bar-container {
       width: 100%;
       height: 8px;
-      background-color: #eee;
+      background-color: #333333;
       border-radius: 4px;
       margin-bottom: 20px;
       overflow: hidden;
@@ -106,7 +110,7 @@
     .progress-bar {
       height: 100%;
       width: 0%;
-      background-color: var(--primary);
+      background-color: var(--primary-light);
       transition: width 0.3s ease;
     }
 
@@ -123,7 +127,7 @@
     .question-number {
       font-size: 0.85rem;
       font-weight: 700;
-      color: var(--primary);
+      color: var(--primary-light);
       margin-bottom: 6px;
     }
 
@@ -133,6 +137,7 @@
       line-height: 1.5;
       margin-bottom: 20px;
       min-height: 50px;
+      color: var(--text);
     }
 
     .options {
@@ -144,7 +149,7 @@
     .option-btn {
       width: 100%;
       padding: 14px 16px;
-      background: #f1f2f6;
+      background: var(--option-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
       font-size: 0.95rem;
@@ -155,9 +160,9 @@
     }
 
     .option-btn:hover {
-      background: var(--primary-light);
-      color: white;
+      background: var(--option-hover);
       border-color: var(--primary-light);
+      color: var(--primary-light);
     }
 
     .btn-group {
@@ -168,12 +173,16 @@
 
     .btn-prev {
       padding: 10px 20px;
-      background: #dfe6e9;
-      border: none;
+      background: #2a2a2a;
+      border: 1px solid var(--border);
       border-radius: 8px;
       color: var(--text-muted);
       font-weight: 600;
       cursor: pointer;
+    }
+
+    .btn-prev:hover {
+      color: var(--text);
     }
 
     /* 결과 페이지 스타일 */
@@ -184,12 +193,13 @@
     }
 
     .result-card {
-      background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      background: linear-gradient(135deg, #7b2cbf 0%, #3c096c 100%);
       color: white;
       padding: 28px 20px;
       border-radius: 16px;
       margin: 20px 0 16px 0;
-      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      border: 1px solid #5a189a;
     }
 
     .result-type-alias {
@@ -197,7 +207,7 @@
       font-weight: 900;
       letter-spacing: -1px;
       margin-bottom: 6px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .result-character {
@@ -211,7 +221,7 @@
       font-size: 0.98rem;
       line-height: 1.65;
       color: var(--text);
-      background: #f8f9fa;
+      background: #262626;
       padding: 20px;
       border-radius: 12px;
       margin-bottom: 12px;
@@ -220,18 +230,18 @@
 
     .result-small-type {
       font-size: 0.75rem;
-      color: #95a5a6;
+      color: var(--text-muted);
       margin-bottom: 16px;
       text-align: center;
     }
 
     .result-guide-box {
-      background: #f0edff;
-      border-left: 4px solid var(--primary);
+      background: #2d1f3d;
+      border-left: 4px solid var(--primary-light);
       padding: 14px 16px;
       border-radius: 8px;
       font-size: 0.9rem;
-      color: #4a47a3;
+      color: #e0aaff;
       text-align: left;
       line-height: 1.5;
       margin-bottom: 24px;
@@ -280,7 +290,7 @@
 
   <!-- 3. 결과 페이지 -->
   <div class="result-container" id="result-container">
-    <div id="result-text-summary" style="font-size: 1.2rem; font-weight: 700; color: #2d3436;"></div>
+    <div id="result-text-summary" style="font-size: 1.2rem; font-weight: 700; color: #ffffff;"></div>
     
     <div class="result-card">
       <div class="result-type-alias" id="result-alias"></div>
@@ -299,7 +309,7 @@
 </div>
 
 <script>
-  // 지정해주신 질문 데이터
+  // 질문 데이터
   const baseQuestions = [
     // 애정 결핍
     { type: '애정 결핍', text: "'나 사랑해?'라고 물었을 때 '그렇다'라고 답할 사람이 주변에 2명 이상 있다." },
@@ -473,13 +483,11 @@
     progressContainer.style.display = 'none';
     testHeader.style.display = 'none';
 
-    // 점수 합산
     const scores = {};
     questions.forEach((q, idx) => {
       scores[q.type] = (scores[q.type] || 0) + userAnswers[idx];
     });
 
-    // 최고 점수 계산 및 동점자 무작위(랜덤) 추출 로직
     let maxScore = -1;
     let maxTypes = [];
 
@@ -492,9 +500,7 @@
       }
     }
 
-    // 최고 점수 중 동점 유형이 있으면 랜덤하게 선택
     const maxType = maxTypes[Math.floor(Math.random() * maxTypes.length)];
-
     const info = typeInfo[maxType];
 
     document.getElementById('result-text-summary').innerText = `당신은 ${info.alias} 입니다.`;
