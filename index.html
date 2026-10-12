@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>토닥이 유형 테스트</title>
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --primary-light: #a29bfe;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #2d3436;
+      --text-muted: #636e72;
+      --border: #dfe6e9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      padding: 28px 24px;
+    }
+
+    /* 시작 페이지 스타일 */
+    .start-container {
+      text-align: center;
+      padding: 40px 10px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .start-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 12px;
+      word-break: keep-all;
+    }
+
+    .start-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    .start-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(108, 92, 231, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .start-btn:hover {
+      background: #5b4cc4;
+      transform: translateY(-2px);
+    }
+
+    /* 헤더 및 진행바 */
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    .header h1 {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background-color: #eee;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    /* 질문 카드 스타일 */
+    .question-card {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .question-card.active {
+      display: block;
+    }
+
+    .question-number {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      min-height: 50px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      padding: 14px 16px;
+      background: #f1f2f6;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .option-btn:hover {
+      background: var(--primary-light);
+      color: white;
+      border-color: var(--primary-light);
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .btn-prev {
+      padding: 10px 20px;
+      background: #dfe6e9;
+      border: none;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* 결과 페이지 스타일 */
+    .result-container {
+      display: none;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      color: white;
+      padding: 28px 20px;
+      border-radius: 16px;
+      margin: 20px 0 16px 0;
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+    }
+
+    .result-type-alias {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .result-character {
+      font-size: 1.1rem;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    .result-desc {
+      text-align: left;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .result-small-type {
+      font-size: 0.75rem;
+      color: #95a5a6;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .result-guide-box {
+      background: #f0edff;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #4a47a3;
+      text-align: left;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      word-break: keep-all;
+    }
+
+    .restart-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 1. 시작 페이지 -->
+  <div class="start-container" id="start-container">
+    <div class="start-title">토닥이 유형 테스트 GO</div>
+    <div class="start-sub">나도 모르게 숨겨둔 내면의 욕구와<br>마음 유형을 알아보세요.</div>
+    <button class="start-btn" onclick="startTest()">바로 시작하기</button>
+  </div>
+
+  <!-- 질문 진단 헤더 -->
+  <div class="header" id="test-header">
+    <h1>토닥이 유형 테스트</h1>
+  </div>
+
+  <div class="progress-bar-container" id="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- 2. 질문 영역 -->
+  <div id="quiz-area"></div>
+
+  <!-- 3. 결과 페이지 -->
+  <div class="result-container" id="result-container">
+    <div id="result-text-summary" style="font-size: 1.2rem; font-weight: 700; color: #2d3436;"></div>
+    
+    <div class="result-card">
+      <div class="result-type-alias" id="result-alias"></div>
+      <div class="result-character" id="result-character"></div>
+    </div>
+
+    <div class="result-desc" id="result-desc"></div>
+    <div class="result-small-type" id="result-small-type"></div>
+
+    <div class="result-guide-box">
+      이제 당신이 결핍 완화에 도움이 될만한 취미를 제공하는 키트를 구경하고, 진지하게 당신의 이야기를 들어줄 AI 챗봇과 대화해 보세요.
+    </div>
+
+    <button class="restart-btn" onclick="restartTest()">다시 테스트하기</button>
+  </div>
+</div>
+
+<script>
+  // 지정해주신 질문 데이터
+  const baseQuestions = [
+    // 애정 결핍
+    { type: '애정 결핍', text: "'나 사랑해?'라고 물었을 때 '그렇다'라고 답할 사람이 주변에 2명 이상 있다." },
+    { type: '애정 결핍', text: '내 감정을 자세히 설명하지 않아도 알아주는 사람이 곁에 있다.' },
+    { type: '애정 결핍', text: '무뚝뚝한 사람보다 관심이나 애정 표현을 많이 해주기를 바라는 편이다.' },
+    
+    // 자기 대상 결핍
+    { type: '자기 대상 결핍', text: '힘든 일이 있을 때 이유를 불문하고 내 편이 되어주는 사람은 현실적으로 찾기 힘들다고 생각한다.' },
+    { type: '자기 대상 결핍', text: "2학기 중간고사를 본 후 '그래도 잘했어', '수고했어'와 비슷한 맥락의 말을 타인에게 듣지 못했다." },
+    { type: '자기 대상 결핍', text: '내가 꾸미는 이유는 타인의 시선이 신경쓰이기 때문이다 (또는 내가 꾸미지 않는 이유는 타인의 시선을 신경쓰지 않기 때문이다).' },
+
+    // 신뢰 결핍
+    { type: '신뢰 결핍', text: '다른 사람의 말을 그대로 믿기보다 숨은 의도를 생각해 보는 편이다.' },
+    { type: '신뢰 결핍', text: '친한 사람이라도 내가 실망시킨다면 나를 떠날 것 같다.' },
+    { type: '신뢰 결핍', text: '누군가와 가까워져도 완전히 마음을 여는 것은 위험하다.' },
+
+    // 의존성 결핍
+    { type: '의존성 결핍', text: '혼자 결정해야 하는 상황이 부담스럽다.' },
+    { type: '의존성 결핍', text: "수행평가 보고서를 다 쓴 다음 '제출 버튼'을 누르지 못해 한참 망설인 적이 3회 이상 있다." },
+    { type: '의존성 결핍', text: '나는 평생 엄마아빠와 함께 살고 싶다.' },
+
+    // 소외감 및 사회적 고립
+    { type: '소외감 및 사회적 고립', text: "최근 일주일 내에 친구와 함께 있지만 '외롭다'고 느낀 경험이 3회 이상 있다." },
+    { type: '소외감 및 사회적 고립', text: '다른 사람들이 내가 없어도 잘 지낼 것 같다는 생각이 들곤 한다.' },
+    { type: '소외감 및 사회적 고립', text: '나는 친구와 노는 것보다 집에서 인터넷 등을 하며 혼자 노는 것이 더 편하다.' },
+
+    // 인정 결핍
+    { type: '인정 결핍', text: '중요한 순간에 나를 이해해 줄 사람이 없는 것처럼 느껴진다.' },
+    { type: '인정 결핍', text: '중요한 결정사항에 대해 타인과 의견이 다르면, 웬만해서는 내가 의견을 굽히는 편이다.' },
+    { type: '인정 결핍', text: '목표를 달성하지 못했더라도 다른 사람이 인정해주면 나는 만족할 수 있다.' },
+
+    // 자존감 결핍
+    { type: '자존감 결핍', text: '나는 장점보다 단점이 더 많다.' },
+    { type: '자존감 결핍', text: '다른 사람과 나를 비교하면서 내가 부족하다고 느낄 때가 일주일에 세 번 이상 된다.' },
+    { type: '자존감 결핍', text: '실수를 하면 나 자신을 많이 탓하는 편이다.' }
+  ];
+
+  const typeInfo = {
+    '애정 결핍': {
+      alias: '<꼬꼬형>',
+      character: '타조',
+      desc: '사랑과 돌봄, 안정적인 애착을 경험하지 못해 타인의 관심을 과도하게 갈구하거나 반대로 관계를 회피하는 상태입니다.'
+    },
+    '인정 결핍': {
+      alias: '<끼끼형>',
+      character: '원숭이',
+      desc: '타인에게 가치 있는 존재로 인정받고 싶은 욕구가 채워지지 않아, 성과나 타인의 시선에 집착하게 되는 상태입니다.'
+    },
+    '소외감 및 사회적 고립': {
+      alias: '<또치형>',
+      character: '고슴도치',
+      desc: '집단이나 타인으로부터 속해 있지 못하다는 느낌을 받으며, 소외되거나 혼자라는 깊은 외로움을 겪는 상태입니다.'
+    },
+    '자존감 결핍': {
+      alias: '<밤또리형>',
+      character: '밤톨',
+      desc: '스스로를 가치 있는 존재로 여기지 못하고, 내면의 결함이나 수치심 때문에 지속적인 불안을 느끼는 상태입니다.'
+    },
+    '의존성 결핍': {
+      alias: '<삐약형>',
+      character: '병아리',
+      desc: '주체적으로 서지 못하고 타인에게 전적으로 의존하려 하거나, 혼자서는 아무것도 할 수 없다는 무능감에 빠지는 상태입니다.'
+    },
+    '자기 대상 결핍': {
+      alias: '<펭이형>',
+      character: '펭귄',
+      desc: '자아가 건강한 형태로 성장하는 데 필수적인 외부 대상의 반응이 발달 과정에서 충분히 제공되지 못해 발생한 심리적 결함 상태를 의미함. 주로 사회에서 동떨어진 것 같은 공허감을 느낌.'
+    },
+    '신뢰 결핍': {
+      alias: '<까까형>',
+      character: '선인장',
+      desc: '배신, 기만, 혹은 가스라이팅과 같은 경험으로 인해 사람이나 세상을 믿지 못하는 상태입니다. 끊임없이 의심하거나 지나치게 경계하며, 관계에서 스스로를 보호하려 벽을 칩니다.'
+    }
+  };
+
+  const options = [
+    { text: '① 전혀 그렇지 않다', score: 1 },
+    { text: '② 그렇지 않은 편이다', score: 2 },
+    { text: '③ 보통이다', score: 3 },
+    { text: '④ 그런 편이다', score: 4 },
+    { text: '⑤ 매우 그렇다', score: 5 }
+  ];
+
+  let questions = [];
+  let currentIdx = 0;
+  let userAnswers = [];
+
+  const startContainer = document.getElementById('start-container');
+  const testHeader = document.getElementById('test-header');
+  const quizArea = document.getElementById('quiz-area');
+  const progressBar = document.getElementById('progress-bar');
+  const resultContainer = document.getElementById('result-container');
+  const progressContainer = document.getElementById('progress-container');
+
+  function shuffle(array) {
+    let copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function startTest() {
+    startContainer.style.display = 'none';
+    testHeader.style.display = 'block';
+    progressContainer.style.display = 'block';
+    quizArea.style.display = 'block';
+    
+    initQuiz();
+  }
+
+  function initQuiz() {
+    questions = shuffle(baseQuestions);
+    userAnswers = new Array(questions.length).fill(0);
+    currentIdx = 0;
+    
+    quizArea.innerHTML = '';
+    questions.forEach((q, idx) => {
+      const card = document.createElement('div');
+      card.className = `question-card ${idx === 0 ? 'active' : ''}`;
+      card.id = `q-${idx}`;
+
+      let optionsHtml = options.map((opt) => `
+        <button class="option-btn" onclick="selectOption(${idx}, ${opt.score})">
+          ${opt.text}
+        </button>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="question-number">Q${idx + 1} / ${questions.length}</div>
+        <div class="question-text">${q.text}</div>
+        <div class="options">${optionsHtml}</div>
+        <div class="btn-group">
+          ${idx > 0 ? `<button class="btn-prev" onclick="prevQuestion(${idx})">이전</button>` : '<div></div>'}
+        </div>
+      `;
+
+      quizArea.appendChild(card);
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const percentage = (currentIdx / questions.length) * 100;
+    progressBar.style.width = `${percentage}%`;
+  }
+
+  function selectOption(qIdx, score) {
+    userAnswers[qIdx] = score;
+    
+    if (qIdx < questions.length - 1) {
+      document.getElementById(`q-${qIdx}`).classList.remove('active');
+      currentIdx = qIdx + 1;
+      document.getElementById(`q-${currentIdx}`).classList.add('active');
+      updateProgress();
+    } else {
+      showResult();
+    }
+  }
+
+  function prevQuestion(qIdx) {
+    document.getElementById(`q-${qIdx}`).classList.remove('active');
+    currentIdx = qIdx - 1;
+    document.getElementById(`q-${currentIdx}`).classList.add('active');
+    updateProgress();
+  }
+
+  function showResult() {
+    quizArea.style.display = 'none';
+    progressContainer.style.display = 'none';
+    testHeader.style.display = 'none';
+
+    // 점수 합산
+    const scores = {};
+    questions.forEach((q, idx) => {
+      scores[q.type] = (scores[q.type] || 0) + userAnswers[idx];
+    });
+
+    // 최고 점수 계산 및 동점자 무작위(랜덤) 추출 로직
+    let maxScore = -1;
+    let maxTypes = [];
+
+    for (const [type, score] of Object.entries(scores)) {
+      if (score > maxScore) {
+        maxScore = score;
+        maxTypes = [type];
+      } else if (score === maxScore) {
+        maxTypes.push(type);
+      }
+    }
+
+    // 최고 점수 중 동점 유형이 있으면 랜덤하게 선택
+    const maxType = maxTypes[Math.floor(Math.random() * maxTypes.length)];
+
+    const info = typeInfo[maxType];
+
+    document.getElementById('result-text-summary').innerText = `당신은 ${info.alias} 입니다.`;
+    document.getElementById('result-alias').innerText = info.alias;
+    document.getElementById('result-character').innerText = `캐릭터: ${info.character}`;
+    document.getElementById('result-desc').innerText = info.desc;
+    document.getElementById('result-small-type').innerText = `(진단 유형: ${maxType})`;
+
+    resultContainer.style.display = 'block';
+  }
+
+  function restartTest() {
+    resultContainer.style.display = 'none';
+    startContainer.style.display = 'block';
+  }
+</script>
+</body>
+</html>
